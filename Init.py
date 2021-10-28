@@ -72,76 +72,7 @@ class Init(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print('Bot started.')
-
-    @commands.command()
-    @commands.is_owner()
-    async def sync(self, ctx):
-        try:
-            embed = discord.Embed(
-                title='**Syncing to dev branch...**',
-                color=(0xFFFF00),
-                timestamp=datetime.datetime.utcnow()
-            )
-            embed.set_footer(
-                text='\u200b',
-                icon_url='https://cdn.discordapp.com/attachments/818581089017790479/827483570398298172/biggiecheese.png'
-            )
-            message = await ctx.send(embed = embed)
-            os.system(f'git -C {twoup}/Biggie-Cheese-Dev pull')
-            for guild in self.client.guilds:
-                player = await self.get_player(guild)
-                if player.is_connected:
-                    await player.teardown()
-            for filename in os.listdir('./bin/Cogs'):
-                if filename.endswith('.py'):
-                    try:
-                        self.client.unload_extension(f'bin.Cogs.{filename[:-3]}')
-                    except:
-                        pass
-            new_cogs = f'{twoup}/Biggie-Cheese-Dev/bin/Cogs'
-            old_cogs = './bin/Cogs'
-            new_files = os.listdir(new_cogs)
-            old_files = os.listdir(old_cogs)
-            for file in old_files:
-                if file.endswith('.py'):
-                    full_path = os.path.join(old_cogs, file)
-                    os.remove(full_path)
-            for file in new_files:
-                if file.endswith('.py'):
-                    shutil.copy(os.path.join(new_cogs, file), old_cogs)
-            for filename in os.listdir('./bin/Cogs'):
-                if filename.endswith('.py'):
-                    self.client.load_extension(f'bin.Cogs.{filename[:-3]}')
-            os.system(f'git -C {twoup}/Biggie-Cheese add .')
-            os.system(f'git -C {twoup}/Biggie-Cheese commit -m "Automated Push"')
-            os.system(f'git -C {twoup}/Biggie-Cheese push -u https://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@github.com/KaasToast/Biggie-Cheese main')
-            embed = discord.Embed(
-                title='**Succesfully synced to dev branch.**',
-                color=(0xFFFF00),
-                timestamp=datetime.datetime.utcnow()
-            )
-            embed.set_footer(
-                text='\u200b',
-                icon_url='https://cdn.discordapp.com/attachments/818581089017790479/827483570398298172/biggiecheese.png'
-            )
-            await message.edit(embed = embed)
-        except:
-            traceback.print_exc()
-
-    @sync.error
-    async def sync_error(self, ctx, error):
-        if isinstance(error, NotOwner):
-            embed = discord.Embed(
-                title='**:x: This command is only available to the owner of the bot.**',
-                color=(0xFFFF00),
-                timestamp=datetime.datetime.utcnow()
-            )
-            embed.set_footer(
-                text='\u200b',
-                icon_url='https://cdn.discordapp.com/attachments/818581089017790479/827483570398298172/biggiecheese.png'
-            )
-            await ctx.send(embed = embed)
+        print('Bot Started.')
 
     @commands.command()
     @commands.is_owner()
